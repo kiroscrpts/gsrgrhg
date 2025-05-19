@@ -52,18 +52,48 @@ progressBar.Size = UDim2.new(0, 0, 1, 0)
 corner2.CornerRadius = UDim.new(0, 6)
 corner2.Parent = progressBar
 
--- Animate progress bar
+-- Percentage label above the progress bar
+local percentageLabel = Instance.new("TextLabel")
+percentageLabel.Parent = mainFrame
+percentageLabel.Position = UDim2.new(0.5, 0, 0.55, 0) -- Slightly above the progress bar
+percentageLabel.AnchorPoint = Vector2.new(0.5, 0.5)
+percentageLabel.Size = UDim2.new(0, 100, 0, 30)
+percentageLabel.BackgroundTransparency = 1
+percentageLabel.TextColor3 = Color3.fromRGB(0, 255, 170)
+percentageLabel.Font = Enum.Font.GothamBold
+percentageLabel.TextScaled = true
+percentageLabel.Text = "1%"
+
+-- Run Script button (hidden initially)
+local runButton = Instance.new("TextButton")
+runButton.Parent = mainFrame
+runButton.Size = UDim2.new(0.4, 0, 0.2, 0)
+runButton.Position = UDim2.new(0.5, 0, 0.88, 0)
+runButton.AnchorPoint = Vector2.new(0.5, 0.5)
+runButton.BackgroundColor3 = Color3.fromRGB(0, 255, 170)
+runButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+runButton.Font = Enum.Font.GothamBold
+runButton.TextScaled = true
+runButton.Text = "Run Script"
+runButton.Visible = false
+
+local buttonCorner = Instance.new("UICorner")
+buttonCorner.CornerRadius = UDim.new(0, 8)
+buttonCorner.Parent = runButton
+
+-- Animate progress bar and percentage over 80 seconds
 spawn(function()
-	while true do
-		for i = 1, 100 do
-			progressBar.Size = UDim2.new(i/100, 0, 1, 0)
-			wait(0.01)
-		end
-		wait(0.3)
-		for i = 100, 1, -1 do
-			progressBar.Size = UDim2.new(i/100, 0, 1, 0)
-			wait(0.005)
-		end
-		wait(0.3)
+	for i = 1, 100 do
+		progressBar.Size = UDim2.new(i / 100, 0, 1, 0)
+		percentageLabel.Text = i .. "%"
+		wait(0.8) -- 80 seconds total
 	end
+
+	-- Show Run Script button after loading completes
+	runButton.Visible = true
+end)
+
+-- Do nothing when button is clicked (placeholder)
+runButton.MouseButton1Click:Connect(function()
+	print("Run Script button clicked (no action)")
 end)
